@@ -65,6 +65,7 @@ class AccountSync(
       val next = current.copy(document = transform(current.document))
       try {
         val written = decodeAccountWorkspace(client.send("PUT", "api/workspace", encodeAccountWorkspace(next), token))
+        if (written.accountId != accountId) throw TypleException("accountLoginRequired")
         // The newer revision is kept.
         val kept = saved?.takeIf { it.revision >= written.revision } ?: written
         saved = kept

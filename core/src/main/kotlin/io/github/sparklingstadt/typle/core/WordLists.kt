@@ -71,7 +71,7 @@ fun saveList(lists: List<WordList>, list: WordList, editing: Boolean): List<Word
   val (category, tags) = normalizeLabels(list.category, list.tags)
   val normalized = list.copy(name = list.name.trimmed, category = category, tags = tags)
   if (lists.any { it.id == list.id }) {
-    return lists.map { item -> if (item.id != list.id) item else normalized.copy(records = item.records) }
+    return lists.map { item -> if (item.id != list.id) item else normalized.copy(records = item.records, extra = item.extra) }
   }
   if (lists.size >= MAX_LISTS) throw TypleException("listLimit", mapOf("max" to MAX_LISTS.toString()))
   return lists + normalized

@@ -71,6 +71,12 @@ Web 版と同じ画面構成・色・部品です。上部バー（ブランド�
 
 ## 確認
 
+Web・Goとの同期対象と共通の回帰テストは [typle-rの互換性の確認](https://github.com/Sparklingstadt/typle-r/blob/main/docs/android-kotlin-compatibility.md) にあります。
+
+`TYPLE_R=/absolute/path/to/typle-r ./gradlew -p core test` は正本の共通保存データも読みます。`TYPLE_R=../typle-r node --test tests/*.test.cjs` は初期リストとレビュー済みのログイン・保存コードの変更を検出します。変更があれば対応を確認し、typle-rで `TYPLE_TEST_DATABASE_URL=postgresql://… npm run test:compat:matrix -- --android` を実行してから `tests/upstream-contract.json` を更新してください。ハッシュだけの更新では互換性を確認したことにはなりません。
+
+Androidの保存モデルは、リスト・単語・記録・記録内端末の未知フィールドも保持します。別端末や将来版のデータを読み込んで編集しても、これらを削除しません。保存応答のアカウントも照合します。Custom Tabs・Keystore・APKはJVMのHTTPテストとは別に確認します。
+
 ```sh
 cd core && ../gradlew test       # 共通の規則
 node --test tests/               # 文言と最初の単語リスト
