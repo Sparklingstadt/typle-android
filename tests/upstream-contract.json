@@ -1,0 +1,53 @@
+{
+  "upstream": "Sparklingstadt/typle-r",
+  "reviewedCommit": "b4ff19cf35571093d2414eb606989a11f6c25da5",
+  "groups": [
+    {
+      "directory": "server/internal/web",
+      "extension": ".go"
+    },
+    {
+      "directory": "server/internal/session",
+      "extension": ".go"
+    },
+    {
+      "directory": "src/core",
+      "extension": ".ts"
+    },
+    {
+      "directory": "src/plugins/storage/cloud",
+      "extension": ".ts"
+    }
+  ],
+  "extraFiles": [
+    "prisma/schema.prisma",
+    "src/plugins/packs/index.ts"
+  ],
+  "files": {
+    "prisma/schema.prisma": "d589e8141b39c5e8ea8eb288ee77045519c8e7119716b5fe83d39a104a6e8cf7",
+    "server/internal/session/session.go": "9c78514a7860b3020a3424b0d8d72e3f8244997291c4ffaaa0cbd2a35ea941d8",
+    "server/internal/web/auth.go": "22ae81a31f304ddb15326e2148b9c64578ce0a4f3d8bc5cc89011801968d7770",
+    "server/internal/web/config.go": "7cbe78dd57094e65a39f0c11a254fb20dd920b0eceda657653f1bd191817fa60",
+    "server/internal/web/health.go": "60599ff69971c7c483f2c23a44483a5025dec04ecb49d551d522f199d9bf24a8",
+    "server/internal/web/report.go": "3e570cc9b671976c59ce32cd873cafe24581eb6360862bf7f4a4787c1363d5c0",
+    "server/internal/web/request.go": "cee7155311218324c9c6bec79d6ce0bbaf0d95ce45caed15fa70f459695db8d0",
+    "server/internal/web/web.go": "0dbd729b66aaa7742e46266dcd5d3dfd939940650e0c4747463c64f2ddd0fa32",
+    "server/internal/web/workspace.go": "71c0b5917ea820ef9577a56f3ce58850eeb40df6d8ff8d8d12915faacb8bba5b",
+    "src/core/appError.ts": "e0d5e13b824dc51f3d2f557cf9c0d255c6a87904b412517d3f3caa73de739e43",
+    "src/core/dashboard.ts": "cb9d69b8c565364fd7e7f6b6b7a7b4c7711ed964db1c519cb6c92dc39eb8765b",
+    "src/core/devices.ts": "03213c527db6f4056050ba719f70a7d4e2b9076a097d7ca7643dbe3a7dfd3b17",
+    "src/core/listOverview.ts": "919c3f8f42d9588e46870da4f121fc71ead3a55771b92e16c9a520450fbdc314",
+    "src/core/randomId.ts": "7a9d52122a739c830bff1d4ff15294336dd1a1e11e23e7447893c63cf1d4512d",
+    "src/core/rankings.ts": "26c046c299228db99baeeaa4a4aa311dbae40c653cf85e422428632f0be4a98b",
+    "src/core/records.ts": "9dddfda3f8df33c628791198d187a55e7f65c07234da42f796aa31f757ec999e",
+    "src/core/typing.ts": "69cdf61867dbef107b89a2a37ee6baeb490ebf42d586d3309735c6163e4b0bad",
+    "src/core/wordFormat.ts": "5862a1bded0305ad35e8a0fcb7cedd11543eb85c9fdd8afb772c3df0374ed8a4",
+    "src/core/wordLists.ts": "c06dbef05c5b22a146f7fabbdd37597f1b7270d7c207b7799fe0b17108e0cf62",
+    "src/core/workspaceDocument.ts": "6d34227e913f06d4e5635cd7be471a66307ad8bb58197b590ba86cef7938e41d",
+    "src/core/workspaceRequest.ts": "ad22068151f88af07acccf4b6129e42b8c298aeb3aa66006c96f48a5104965cf",
+    "src/core/workspaceSession.ts": "86729de90679e90bfe0a0a6d6abf83c2ba6b75b5f3dad8223108ab93842ea609",
+    "src/core/workspaceStore.ts": "8822ec21b32cc7cc70d52bf3f969a98479a32d63fd2737a347d47a76791391b9",
+    "src/plugins/packs/index.ts": "1ea19d91079825d1d45b4df0da5e54cc8e32627198592df3522f6f2dea7bb65d",
+    "src/plugins/storage/cloud/client.ts": "8ae39adc547b6e3e1cc70926ce54c5b81ae8f9ca0a6febb33d032cbf37d31666"
+  }
+}

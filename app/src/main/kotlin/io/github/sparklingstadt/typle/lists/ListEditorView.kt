@@ -232,10 +232,11 @@ fun ListEditorView(listId: String?) {
     }
     val list = WordList(
       id = original?.id ?: randomId(), name = name,
-      words = kept.map { Word(it.word.display, it.word.input.ifEmpty { it.word.display }, it.word.annotation) },
+      words = kept.map { it.word.copy(input = it.word.input.ifEmpty { it.word.display }) },
       records = original?.records ?: emptyList(), createdAt = original?.createdAt ?: isoString(Instant.now()),
       // The Android editor does not edit these yet, so they stay as saved.
       category = original?.category, tags = original?.tags, group = original?.group, levels = original?.levels,
+      extra = original?.extra ?: emptyMap(),
     )
     saving = true
     scope.launch {

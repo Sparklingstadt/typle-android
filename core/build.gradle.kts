@@ -23,5 +23,13 @@ kotlin {
 }
 
 tasks.test {
+  System.getenv("TYPLE_R")?.let {
+    inputs.file(file("$it/tests/contracts/workspace.json"))
+    environment("TYPLE_R", it)
+  }
+  System.getenv("TYPLE_COMPAT_TARGETS")?.let {
+    inputs.property("compatibilityTargets", it)
+    environment("TYPLE_COMPAT_TARGETS", it)
+  }
   testLogging { events("failed") }
 }

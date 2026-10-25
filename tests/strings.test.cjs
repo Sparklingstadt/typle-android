@@ -40,7 +40,10 @@ function enumCases(sources, name) {
 }
 
 test('the Android app bundles the same starting lists as the web app', { skip: !typleR && 'TYPLE_R is not set' }, () => {
-  for (const name of ['samples.json', 'countries.json', 'commands.json']) {
+  const webPacks = fs.readdirSync(path.join(typleR, 'src/plugins/packs')).filter(name => name.endsWith('.json')).sort()
+  const bundled = fs.readdirSync(path.join(android, 'core/src/main/resources')).filter(name => name.endsWith('.json')).sort()
+  assert.deepEqual(bundled, webPacks, 'copy new packs and update initialLists() in Workspace.kt')
+  for (const name of webPacks) {
     assert.equal(fs.readFileSync(path.join(android, 'core/src/main/resources', name), 'utf8'),
       fs.readFileSync(path.join(typleR, 'src/plugins/packs', name), 'utf8'), `${name}: copy typle-r's src/plugins/packs/${name} again`)
   }

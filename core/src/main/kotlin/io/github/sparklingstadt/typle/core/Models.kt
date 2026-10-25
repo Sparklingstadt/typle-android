@@ -3,6 +3,7 @@ package io.github.sparklingstadt.typle.core
 import java.util.UUID
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 
 /**
  * An error that names a message under `errors` instead of carrying text, so the app shows it in the reader's
@@ -13,14 +14,16 @@ class TypleException(val key: String, val values: Map<String, String> = emptyMap
   override fun hashCode(): Int = key.hashCode() * 31 + values.hashCode()
 }
 
-@Serializable
-data class Word(val display: String, val input: String, val annotation: String = "")
+@Serializable(with = WordStorageSerializer::class)
+data class Word(val display: String, val input: String, val annotation: String = "",
+  val extra: Map<String, JsonElement> = emptyMap())
 
-@Serializable
-data class PracticeDevice(val id: String, val name: String, val layout: String = "")
+@Serializable(with = DeviceStorageSerializer::class)
+data class PracticeDevice(val id: String, val name: String, val layout: String = "",
+  val extra: Map<String, JsonElement> = emptyMap())
 
 /** A practice record as stored. Records from older versions may lack every field but `time` and `date`. */
-@Serializable
+@Serializable(with = RecordStorageSerializer::class)
 data class StoredRecord(
   val id: String? = null,
   val time: Double,
@@ -29,9 +32,10 @@ data class StoredRecord(
   val accuracy: Double? = null,
   val device: PracticeDevice? = null,
   val wordCount: Int? = null,
+  val extra: Map<String, JsonElement> = emptyMap(),
 )
 
-@Serializable
+@Serializable(with = ListStorageSerializer::class)
 data class WordList(
   val id: String,
   val name: String,
@@ -50,11 +54,12 @@ data class WordList(
    */
   val group: String? = null,
   val levels: List<String>? = null,
+  val extra: Map<String, JsonElement> = emptyMap(),
 )
 
 data class WorkspaceDocument(val lists: List<WordList>, val devices: List<PracticeDevice>)
 
-/** The JSON form Typle stores and sends: unknown fields are skipped and absent optional fields stay absent. */
+/** The JSON form Typle stores and sends. Storage serializers retain unknown nested fields across edits. */
 val TypleJson = Json {
   ignoreUnknownKeys = true
   explicitNulls = false

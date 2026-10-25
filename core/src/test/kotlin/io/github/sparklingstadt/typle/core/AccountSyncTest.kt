@@ -123,6 +123,14 @@ class AccountSyncTest {
     assertEquals(WorkspaceDocument(listOf(list), listOf(device("d1"))), saved)
   }
 
+  @Test fun `change refuses a response for another account`() {
+    val backend = Backend()
+    val sync = backend.sync()
+    sync.load()
+    backend.accountId = "github:2"
+    assertEquals("accountLoginRequired", keyOf { sync.change { it } })
+  }
+
   @Test fun `changes follow the revision of the last save`() {
     val backend = Backend()
     val sync = backend.sync()
