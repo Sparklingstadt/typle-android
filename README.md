@@ -1,6 +1,8 @@
 # Typle for Android タブレット（Kotlin・Jetpack Compose）
 
-Typle の Android タブレット版です。Web 版（`src/`）・iPad 版（`ios/`）と同じ判定・記録・ベストの規則で、タブレットを横向きにして外付けキーボードで練習できます。設計は `docs/superpowers/specs/2026-10-20-android-tablet-design.md` にあります。
+Typle の Android タブレット版です。Web 版・iPad 版（[typle-r](https://github.com/Sparklingstadt/typle-r)）と同じ判定・記録・ベストの規則で、タブレットを横向きにして外付けキーボードで練習できます。設計は `docs/specs/2026-10-20-android-tablet-design.md` にあります。
+
+typle-r v0.89.0 で、typle-r の `android/` からこのリポジトリに移しました（`android/` の履歴も引き継いでいます）。コミットの `(Sparklingstadt/typle-r#N)` は typle-r の PR で、それまでのリリースノートは typle-r の README にあります。
 
 ## 必要なもの
 
@@ -9,12 +11,11 @@ Typle の Android タブレット版です。Web 版（`src/`）・iPad 版（`i
 
 ## 入れ方
 
-v0.70.0 で GitHub Actions のワークフローを削除したため、debug APK は手元で作ります（`cd android && ./gradlew :app:assembleDebug`。`app/build/outputs/apk/debug/app-debug.apk`）。ダウンロードした `app-debug.apk` をタブレットに送り、「提供元不明のアプリ」を許可して開くと入ります。Play ストアには出していません。
+v0.70.0 で GitHub Actions のワークフローを削除したため、debug APK は手元で作ります（`./gradlew :app:assembleDebug`。`app/build/outputs/apk/debug/app-debug.apk`）。ダウンロードした `app-debug.apk` をタブレットに送り、「提供元不明のアプリ」を許可して開くと入ります。Play ストアには出していません。
 
 自分でビルドするときは次のとおりです。
 
 ```sh
-cd android
 ./gradlew :app:assembleDebug        # app/build/outputs/apk/debug/app-debug.apk
 ./gradlew :app:installDebug         # USB でつないだタブレットに入れる
 ```
@@ -28,9 +29,9 @@ cd android
 
 ## 見た目
 
-Web 版と同じ画面構成・色・部品です。上部バー（ブランド・保存先・ライト／ダーク・アカウント）、幅に応じたサイドバーかドロワー、カード。色と角丸は `src/app/globals.css` の値を `app/src/main/kotlin/…/design/Theme.kt` に写しています。表示言語（日本語・English）は「一般」でその場で切り替えられます。
+Web 版と同じ画面構成・色・部品です。上部バー（ブランド・保存先・ライト／ダーク・アカウント）、幅に応じたサイドバーかドロワー、カード。色と角丸は typle-r の `src/app/globals.css` の値を `app/src/main/kotlin/…/design/Theme.kt` に写しています。表示言語（日本語・English）は「一般」でその場で切り替えられます。
 
-`ci/screenshots.sh` は、起動中のエミュレーターで、サンプルデータ（Debug ビルドだけの起動引数 `typleDemo`、`app/src/debug/…/DemoEntry.kt`）で各ページをタブレットのエミュレーターに表示してスクリーンショットを撮り、`android/screenshots` に保存します。手で実行します。
+`ci/screenshots.sh` は、起動中のエミュレーターで、サンプルデータ（Debug ビルドだけの起動引数 `typleDemo`、`app/src/debug/…/DemoEntry.kt`）で各ページをタブレットのエミュレーターに表示してスクリーンショットを撮り、`screenshots/` に保存します。リポジトリのルートで手で実行します。
 
 ## できること
 
@@ -53,16 +54,16 @@ Web 版と同じ画面構成・色・部品です。上部バー（ブランド�
 
 - 2つのデータは別々で、切り替えてもコピーしません。
 - アカウントでも、このタブレットと同じくすべての操作ができます（記録の削除と端末の変更も含みます）。変更のたびに、読み込んだときの `revision` を付けてデータ全体を保存します。別の画面で先に保存されていたとき（`409 conflict`）は、最新を読み直して同じ変更をやり直します（3回まで）。
-- ログインは「一般」の「GitHub でログイン」で、Chrome Custom Tabs（`androidx.browser`）が GitHub のログインを開きます。終わると `typle-r://login?code=…` でアプリに戻り、コードをトークンに替えます。流れは [README の「iPad と Mac と Android と Windows のログイン」](../README.md#ipad-と-mac-と-android-と-windows-のログイン) にあります。受け取ったトークンは Android Keystore の鍵で暗号化して保存し、有効期限は30日です。使っているあいだは自動で延びます。期限が切れたら、もう一度ログインしてください。
+- ログインは「一般」の「GitHub でログイン」で、Chrome Custom Tabs（`androidx.browser`）が GitHub のログインを開きます。終わると `typle-r://login?code=…` でアプリに戻り、コードをトークンに替えます。流れは [typle-r の README の「iPad と Mac と Android と Windows のログイン」](https://github.com/Sparklingstadt/typle-r#ipad-と-mac-と-android-と-windows-のログイン) にあります。受け取ったトークンは Android Keystore の鍵で暗号化して保存し、有効期限は30日です。使っているあいだは自動で延びます。期限が切れたら、もう一度ログインしてください。
 - ログアウトするとトークンを消して「このタブレット」に戻ります。ログインしたまま「このタブレット」に切り替え、あとで「アカウントに切り替える」で戻ることもできます。
-- サーバーの URL は https だけです。http は `localhost`・`127.0.0.1`・`10.0.2.2`・`*.local` に限ります。エミュレーターから手元の Web 版（`npm run dev`）で試すときは `http://10.0.2.2:<ポート>` を入れます。GitHub の OAuth App の callback URL がサーバー（`AUTH_URL`）のものである必要があり、開発用ログインはアプリでは使えません。
+- サーバーの URL は https だけです。http は `localhost`・`127.0.0.1`・`10.0.2.2`・`*.local` に限ります。エミュレーターから手元の Web 版（typle-r の `npm run dev`）で試すときは `http://10.0.2.2:<ポート>` を入れます。GitHub の OAuth App の callback URL がサーバー（`AUTH_URL`）のものである必要があり、開発用ログインはアプリでは使えません。
 - v0.56.x までの「アカウント（API）」（自分で立てる `/api/v1` に GitHub のトークンでつなぐ）はなくなりました。更新後の初回起動で、その設定とトークンを消して「このタブレット」に戻ります。
 
 ## 構成
 
 | 場所 | 内容 |
 |---|---|
-| `core/` | Android に依存しない Kotlin/JVM のライブラリ（独立した Gradle ビルド）。`src/core` の入力判定・記録・ベスト・ランキング・単語リスト・端末・CSV・ダッシュボードと、最初の単語リスト（`src/plugins/packs` のコピー）。`gradle test` で確かめます |
+| `core/` | Android に依存しない Kotlin/JVM のライブラリ（独立した Gradle ビルド）。typle-r の `src/core` の入力判定・記録・ベスト・ランキング・単語リスト・端末・CSV・ダッシュボードと、最初の単語リスト（`src/plugins/packs` のコピー）。`gradle test` で確かめます |
 | `app/` | Jetpack Compose のアプリ。`storage/`（このタブレットとアカウント、ログイン）、`practice/`、`lists/`、`records/`、`home/`、`devices/`、`settings/`、`design/`（色と部品）、`assets/messages/`（文言） |
 | `gradle/libs.versions.toml` | 版の一覧（core も読みます） |
 
@@ -71,11 +72,21 @@ Web 版と同じ画面構成・色・部品です。上部バー（ブランド�
 ## 確認
 
 ```sh
-cd android/core && ../gradlew test
+cd core && ../gradlew test       # 共通の規則
+node --test tests/               # 文言と最初の単語リスト
+TYPLE_R=../typle-r node --test tests/
 ```
 
-- CI のワークフローはありません（v0.70.0 で削除）。core のテスト（`cd android/core && ../gradlew test`）と debug APK のビルドは手元で行います。データの写しと文言は `npm test`（`tests/android.test.cjs`）が確かめます。
-- `npm test` の `tests/android.test.cjs` が、最初の単語リストのコピーが元と同じか、使っている文言が日本語・英語の両方にあり、プレースホルダーがそろっているか、「iPad」「ブラウザー」が残っていないかを確かめます。`src/plugins/packs` を変えたら `core/src/main/resources` にコピーしてください。
+- CI のワークフローはありません（typle-r v0.70.0 で削除）。core のテストと debug APK のビルドは手元で行います。
+- `tests/strings.test.cjs` が、使っている文言が日本語・英語の両方にあり、プレースホルダーがそろっているか、「iPad」「ブラウザー」が残っていないかを確かめます。`TYPLE_R` に typle-r の手元のフォルダーを指定すると、最初の単語リストの写し（`core/src/main/resources`）が typle-r の `src/plugins/packs` と同じかも確かめます。指定しなければ、このテストは飛ばします。
+
+## 単語リストを Web 版に合わせる
+
+`core/src/main/resources` の `samples.json`・`countries.json`・`commands.json` は typle-r の `src/plugins/packs` の写しです。直接書き換えません。typle-r で変わったら写し、`TYPLE_R` を指定したテストで同じになったことを確かめます。
+
+```sh
+cp ../typle-r/src/plugins/packs/{samples,countries,commands}.json core/src/main/resources/
+```
 
 ## 範囲外
 

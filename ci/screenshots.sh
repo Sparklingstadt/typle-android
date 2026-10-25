@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Shows every page of the debug app with its sample data (DemoEntry.kt) on the running emulator and saves a
-# screenshot of each into android/screenshots, to compare with the web app. Run it by hand.
+# screenshot of each into screenshots, to compare with the web app. Run it by hand.
 set -euo pipefail
-apk=android/app/build/outputs/apk/debug/app-debug.apk
+apk=app/build/outputs/apk/debug/app-debug.apk
 package=io.github.sparklingstadt.typle
-out=android/screenshots
+out=screenshots
 mkdir -p "$out"
 adb install -r "$apk"
 # The slow CI emulator can make the launcher stop responding; keep its "isn't responding" dialog off the screenshots.

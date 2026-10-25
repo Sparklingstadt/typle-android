@@ -3,10 +3,10 @@ const assert = require('node:assert/strict')
 const fs = require('node:fs')
 const path = require('node:path')
 
-// The Android app (android/) is built with the Android SDK only (no CI workflow since v0.70.0); these checks of its
-// data run everywhere.
-const root = path.join(__dirname, '..')
-const android = path.join(root, 'android')
+// The app is built with the Android SDK only (no CI workflow); these checks of its data run everywhere with
+// `node --test tests/`. TYPLE_R, a checkout of typle-r, also compares the starting lists with the web app's.
+const android = path.join(__dirname, '..')
+const typleR = process.env.TYPLE_R ? path.resolve(process.env.TYPLE_R) : undefined
 
 function kotlinFiles(dir) {
   if (!fs.existsSync(dir)) return []
@@ -39,10 +39,10 @@ function enumCases(sources, name) {
   return match[1].split(',').map(item => item.trim().match(/^\w+/)?.[0]).filter(Boolean).map(item => item.toLowerCase())
 }
 
-test('the Android app bundles the same starting lists as the web app', () => {
+test('the Android app bundles the same starting lists as the web app', { skip: !typleR && 'TYPLE_R is not set' }, () => {
   for (const name of ['samples.json', 'countries.json', 'commands.json']) {
     assert.equal(fs.readFileSync(path.join(android, 'core/src/main/resources', name), 'utf8'),
-      fs.readFileSync(path.join(root, 'src/plugins/packs', name), 'utf8'), `${name}: copy src/plugins/packs/${name} again`)
+      fs.readFileSync(path.join(typleR, 'src/plugins/packs', name), 'utf8'), `${name}: copy typle-r's src/plugins/packs/${name} again`)
   }
 })
 
