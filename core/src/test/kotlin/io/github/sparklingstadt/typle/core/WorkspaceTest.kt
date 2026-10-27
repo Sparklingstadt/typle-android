@@ -43,12 +43,12 @@ class WorkspaceTest {
 
   @Test fun initialListsMatchThePacks() {
     val lists = initialLists()
-    // Since v0.85.0 the initial lists are the lists of the sparklingstadt account, in its order. The lists it made
-    // itself, and those it keeps whole beside their parts, have no category or tags.
+    // Since v0.85.0 the initial lists are the lists of the sparklingstadt account, in its order. Since typle-r v0.101.1
+    // every one has a category and tags, including those it made itself and those it keeps whole beside their parts.
     assertEquals(listOf("8f3cf116-1f9f-4579-a071-e600094b104d", "ef974a4b-3c7a-4eeb-9979-6721a0a1c81a"), lists.map { it.id }.take(2))
     assertEquals(67, lists.size)
     assertEquals(listOf("arch-linux", "arch-linux-beginner", "sql-server-tsql-syntax-advanced"), listOf(lists[9].id, lists[10].id, lists.last().id))
-    assertEquals(54, lists.count { it.category != null && !it.tags.isNullOrEmpty() })
+    assertEquals(67, lists.count { it.category != null && !it.tags.isNullOrEmpty() })
     validateLists(lists)
   }
 
